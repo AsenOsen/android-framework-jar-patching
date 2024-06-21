@@ -18,3 +18,8 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 8. Build Magisk module for replacing origina JAR in `/system/framework`: `./build_magisk_module.sh`
 9. Push built magisk module (`jarpatcher.zip`) to device (via ADB) and install ZIP via Magisk on device
 10. Enjoy modified JAR!
+
+# Additional readings
+
+1. [Magisk module structure guide](https://topjohnwu.github.io/Magisk/guides.html)
+2. [Patching apex libraries](https://xdaforums.com/t/question-override-libart-so-and-other-runtime-apex-components-on-android-10.4136983/)
