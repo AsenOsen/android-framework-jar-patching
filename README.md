@@ -19,6 +19,11 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 9. Push built magisk module (`jarpatcher.zip`) to device (via ADB) and install ZIP via Magisk on device
 10. Enjoy modified JAR!
 
+# Extra advices
+
+1. Enable Magisk Hide ("magisk modifications are reverted for processes on hidelist") to stay stealth.
+2. Add researchable app to Magisk Hide list
+
 # Additional readings
 
 1. [Magisk module structure guide](https://topjohnwu.github.io/Magisk/guides.html)
