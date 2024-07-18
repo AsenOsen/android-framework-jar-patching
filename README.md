@@ -24,6 +24,14 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 1. Enable Magisk Hide ("magisk modifications are reverted for processes on hidelist") to stay stealth.
 2. Add researchable app to Magisk Hide list
 
+# What to do if you catch a bootloop after your patching?
+
+1. Flash TWRP into recovery partition
+2. Boot TWRP
+3. In TWRP go to `Advanced -> File Manager`
+4. Remove Magisk module folder `/data/adb/modules/jarpatcher`
+5. Reboot to system
+
 # Additional readings
 
 1. [Magisk module structure guide](https://topjohnwu.github.io/Magisk/guides.html)
