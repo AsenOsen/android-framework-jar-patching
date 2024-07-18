@@ -1,6 +1,11 @@
 # What is it?
 
-This is a set of bash scripts and tiny Magisk module for patching system JAR files of Android.
+This is a set of bash scripts and Magisk module for patching system JAR files of Android.  
+
+Magisk module does following things:
+
+- substitutes JAR in `/system/framework` dir
+- remounts folders in `/apex/` to be writeable (why? read `APEX` section)
 
 # Why?
 
@@ -19,9 +24,38 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 9. Push built magisk module (`jarpatcher.zip`) to device (via ADB) and install ZIP via Magisk on device
 10. Enjoy modified JAR!
 
+# APEX
+
+## Why we need APEX at all? 
+
+Well, most of interesting JARs since Android 10 are distributed in APEX format, which contains `.img` with `.jar` and `.so` libraries. Best explanation of APEX format you may find [here](https://android.googlesource.com/platform/system/apex/+/refs/heads/master/docs/README.md). As far as we want to be able to modify all system libraries, we have to be able to modify libraries provided by APEXes as well.
+
+For example, default Java classes like `java.lang.String` or `java.net.URL` provided to all Android apps via `/apex/com.android.art/javalib/core-oj.jar` library.
+
+## Native utility for interaction with APEX - [apexd](https://android.googlesource.com/platform/system/apex/+/refs/heads/sdk-release/apexd/)
+
+We can interact with APEXes manually via `apexd` binary available on every modern Android:
+
+1. `stop` (stop zygote and all apps which are using files from `/apex/*`)
+2. `apexd --unmount-all` (unmount all apex filders)
+3. `apexd --otachroot-bootstrap` (mounts all apexes back)
+4. `start` (start zygote with user space)
+
+## How this project can help?
+
+By default, Magisk module from this project contains `service.sh` which remounts some of most interesting APEXes after file system got initialized. This lets you to do substitute JAR's and SO's in runtime like this:
+
+1. `stop` (stop zygote and all apps which are using files from `/apex/*`)
+2. `cp /sdcard/patched-core-oj.jar /apex/com.android.art/javalib/core-oj.jar`
+4. `start` (start zygote with user space)
+
+After system boots patched version of `core-oj.jar` will be loaded in all apps. 
+
+If you need some extra APEXes, modify `service.sh` (follow comments).
+
 # Extra advices
 
-1. Enable Magisk Hide ("magisk modifications are reverted for processes on hidelist") to stay stealth.
+1. Enable Magisk Hide ("magisk modifications are reverted for processes on hidelist") and install [PlayIntegrityFix module](https://github.com/chiteroman/PlayIntegrityFix) to stay stealth.
 2. Add researchable app to Magisk Hide list
 
 # What to do if you catch a bootloop after your patching?
@@ -35,4 +69,4 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 # Additional readings
 
 1. [Magisk module structure guide](https://topjohnwu.github.io/Magisk/guides.html)
-2. [Patching apex libraries](https://xdaforums.com/t/question-override-libart-so-and-other-runtime-apex-components-on-android-10.4136983/)
+2. [APEX format](https://android.googlesource.com/platform/system/apex/+/refs/heads/master/docs/README.md)
