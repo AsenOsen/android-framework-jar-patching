@@ -4,24 +4,26 @@ This is a set of bash scripts and Magisk module for patching system JAR files of
 
 Magisk module does following things:
 
-- substitutes JAR in `/system/framework` dir
+- substitutes JARs in `/system/framework` dir
 - remounts folders in `/apex/` to be writeable (why? read `APEX` section)
+- substitutes JARs in `/apex/` (temporarily or permanently)
 
 # Why?
 
-Sometimes tools like Frida or XPosed/LSPosed got detected by app under research, so we need to use some uncommon techniques to bypass detection. One of such technique is patching system libraries (`.jar` files, `.so` files) to execute code from them as soon as app load them into memory.
+Sometimes tools like Frida or XPosed/LSPosed got detected by app under research, so we need to use some **uncommon techniques** to bypass detection. One of such technique is patching system libraries (`.jar` files, `.so` files) to execute code from them as soon as app load them into memory.
 
 # How to use this repo?
 
 1. Download latest [apktool.jar](https://github.com/iBotPeaches/Apktool/releases) and put it in this folder
 2. Choose JAR file you want to modify on your Android from `/system/framework`
-3. Download JAR from device (via ADB) and put it in this folder
+3. Download JAR from device (via ADB) and put it in this folder under any name (for example `my.jar`)
 4. Modify variables in `*.sh` files according to comments on top
-5. Run `./jar_to_smali.sh`, after run you will get `your-jar-file.jar.smali` folder
-6. Modify SMALI files in `your-jar-file.jar.smali` as you wish
-7. Run `smali_to_jar.sh` to build JAR from updated SMALI files (updated JAR will be located in `magisk_module/system/framework/`)
-8. Build Magisk module for replacing origina JAR in `/system/framework`: `./build_magisk_module.sh`
-9. Push built magisk module (`jarpatcher.zip`) to device (via ADB) and install ZIP via Magisk on device
+5. Run `./jar_to_smali.sh my.jar`, after run you will get `my.jar.smali` folder
+6. Modify SMALI files in `my.jar.smali` as you wish
+7. Run `smali_to_jar.sh my.jar` to build JAR from updated SMALI files (updated JAR will be located in `magisk_module/system/framework/my.jar`)
+8. Build Magisk module for replacing original JARs: `./build_magisk_module.sh`
+9. Push magisk module (`jarpatcher.zip`) to device via ADB, install magisk module and reboot device to apply changes: `adb push jarpatcher.zip /sdcard/ && adb shell su -c "magisk --install-module /sdcard/jarpatcher.zip" && adb reboot`
+	- if you modified JAR from APEX(`/apex/`), see `How to replace JAR in APEX?` section below
 10. Enjoy modified JAR!
 
 # APEX
@@ -41,17 +43,19 @@ We can interact with APEXes manually via `apexd` binary available on every moder
 3. `apexd --otachroot-bootstrap` (mounts all apexes back)
 4. `start` (start zygote with user space)
 
-## How this project can help?
+## How to replace JAR inside APEX?
 
-By default, Magisk module from this project contains `service.sh` which remounts some of most interesting APEXes after file system got initialized. This lets you to do substitute JAR's and SO's in runtime like this:
+By default, Magisk module from this project contains `service.sh` which remounts some of most interesting APEXes after file system got initialized. This lets you to do substitute JAR and SO libraries in runtime like this:
 
 1. `stop` (stop zygote and all apps which are using files from `/apex/*`)
-2. `cp /sdcard/patched-core-oj.jar /apex/com.android.art/javalib/core-oj.jar`
+2. `cp /sdcard/patched-core-oj.jar /apex/com.android.art/javalib/core-oj.jar` (patch)
 4. `start` (start zygote with user space)
 
-After system boots patched version of `core-oj.jar` will be loaded in all apps. 
+After system boots, patched version of `core-oj.jar` will be loaded in all apps. 
 
-If you need some extra APEXes, modify `service.sh` (follow comments).
+If you need to modify some other APEXes, edit `service.sh` (see `REMOUNTING APEXES` comment). 
+
+**IMPORTANT!** Patching like this will not make permanent changes for APEXes, after reboot you will have to repeat this process again. If you want changes to be permanent after each system reboot, see `PERMANENT CHANGES IN APEXES` comment in `service.sh` and rebuild Magisk module.
 
 # Extra advices
 
