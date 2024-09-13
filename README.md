@@ -26,6 +26,32 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 	- if you modified JAR from APEX(`/apex/`), see `How to replace JAR in APEX?` section below
 10. Enjoy modified JAR!
 
+# Patches!
+
+This repo contains most useful patches (`patches/`) for reverse-engineering which you can apply to your device:
+
+- `sslunpinning` - makes global unpinning in system for all apps on Java level which using Conscrypt library (almost 80% of apps).
+- `set_webview_debuggable` - enables DevTools for WebViews systemwide so you can debug JavaScript in them from Desktop via chrome://inspect/#devices 
+- `hide_debug_mode` - hides USB Debugging enabled in Developer options, so apps will not be able to detect it
+
+## How to apply patches?
+
+1. Do steps 1-5 from `How to use this repo?` section for the JAR library which you want to patch (each file contains library name and file name).
+2. Just run the patch you interested in! For example: `./patches/ssl_unpinning.sh`
+
+## How to write your own patch?
+
+It is very easy to write your own patches! Just copy&paste any file from `patches/` and see its code, the code is completely self-expanatory. "Patch-engine" is 100% shell-based, the only dependency needed is PERL (preinstalled almost in all Linux-based systems including MacOS).
+
+Each patch consist of following parts:
+- `PATCH_IDENTITY` - any unique name of patch to locate it in SMALI code
+- `LIB` - JAR library name patch is applied against (after using `./jar_to_smali.sh` script)
+- `FILE` - class path to patched file in JAR library
+- `REGEX` - PERL-based regex to locate place in SMALI code which must be patched
+- `PATCH` - SMALI code which will be added
+
+If you have more questions regarding writing patches, feel free to get in touch with me in Telegram - https://t.me/Asen_17.
+
 # APEX
 
 ## Why we need APEX at all? 
