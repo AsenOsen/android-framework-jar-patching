@@ -51,7 +51,7 @@ android_logcat() {
     RANDOM_NUMBER=$(( RANDOM % 100000 ))
     LABEL="99$RANDOM_NUMBER"
     CODE=$(cat << EOF
-	:try_start_$LABEL
+    :try_start_$LABEL
     const-string v0, "$LOG_IDENTITY"
     invoke-static {v0, v0}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
     :try_end_$LABEL
