@@ -1,6 +1,6 @@
 # What is it?
 
-This is a set of bash scripts and Magisk module for patching system JAR files of Android.  
+This is a set of bash scripts and Magisk module for patching system `JAR` files and `SO` files of Android.  
 
 Magisk module does following things:
 
@@ -12,7 +12,7 @@ Magisk module does following things:
 
 Sometimes tools like Frida or XPosed/LSPosed got detected by app under research, so we need to use some **uncommon techniques** to bypass detection. One of such technique is patching system libraries (`.jar` files, `.so` files) to execute code from them as soon as app load them into memory.
 
-# How to use this repo?
+# How to use?
 
 1. Download latest [apktool.jar](https://github.com/iBotPeaches/Apktool/releases) and put it in this folder
 2. Choose JAR file you want to modify on your Android from `/system/framework`
@@ -24,30 +24,30 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 8. Build Magisk module for replacing original JARs: `./build_magisk_module.sh`
 9. Push magisk module (`jarpatcher.zip`) to device via ADB, install magisk module and reboot device to apply changes: `adb push jarpatcher.zip /sdcard/ && adb shell su -c "magisk --install-module /sdcard/jarpatcher.zip" && adb reboot`
 	- if you modified JAR from APEX(`/apex/`), see `How to replace JAR in APEX?` section below
-10. Enjoy modified JAR!
+10. Enjoy modified JAR! Or not if you caught a boot loop, then [here is how to easily fix it](#what-to-do-if-you-catch-a-bootloop-after-your-patching)
 
-# Patches!
+# Patches! (for JARs)
 
 This repo contains most useful patches (`patches/`) for reverse-engineering which you can apply to your device:
 
 - `sslunpinning` - makes global unpinning in system for all apps on Java level which using Conscrypt library (almost 80% of apps).
-- `set_webview_debuggable` - enables DevTools for WebViews systemwide so you can debug JavaScript in them from Desktop via chrome://inspect/#devices 
+- `set_webview_debuggable` - enables DevTools for WebViews systemwide so you can debug JavaScript in them from Desktop via `chrome://inspect/#devices` 
 - `hide_debug_mode` - hides USB Debugging enabled in Developer options, so apps will not be able to detect it
 
 ## How to apply patches?
 
-1. Do steps 1-5 from `How to use this repo?` section for the JAR library which you want to patch (each file contains library name and file name).
-2. Just run the patch you interested in! For example: `./patches/ssl_unpinning.sh`
+1. Do steps 1-5 from [How to use?](#how-to-use) section for the JAR library which you want to patch (each file contains library name and file name).
+2. Just run the patch you interested in! For example: `bash ./patches/ssl_unpinning.sh`
 
 ## How to write your own patch?
 
 It is very easy to write your own patches! Just copy&paste any file from `patches/` and see its code, the code is completely self-expanatory. "Patch-engine" is 100% shell-based, the only dependency needed is PERL (preinstalled almost in all Linux-based systems including MacOS).
 
 Each patch consist of following parts:
-- `PATCH_IDENTITY` - any unique name of patch to locate it in SMALI code
-- `LIB` - JAR library name patch is applied against (after using `./jar_to_smali.sh` script)
+- `PATCH_IDENTITY` - any unique name of patch to locate it in SMALI code (currently used MD5 hashes, but can be any human-readable name)
+- `LIB` - JAR library name which patch will be applied to (after using same name in `./jar_to_smali.sh` script)
 - `FILE` - class path to patched file in JAR library
-- `REGEX` - PERL-based regex to locate place in SMALI code which must be patched
+- `REGEX` - PERL-based regex to locate place in SMALI code which must be patched. To escape SMALI code, you can use [this online tool](https://www.regex-escape.com/online-regex-escaper.php)
 - `PATCH` - SMALI code which will be added
 
 If you have more questions regarding writing patches, feel free to get in touch with me in Telegram - https://t.me/Asen_17.
