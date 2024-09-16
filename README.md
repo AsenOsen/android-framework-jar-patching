@@ -50,8 +50,6 @@ Each patch consist of following parts:
 - `REGEX` - PERL-based regex to locate place in SMALI code which must be patched. To escape SMALI code, you can use [this online tool](https://www.regex-escape.com/online-regex-escaper.php)
 - `PATCH` - SMALI code which will be added
 
-If you have more questions regarding writing patches, feel free to get in touch with me in Telegram - https://t.me/Asen_17.
-
 # APEX
 
 ## Why we need APEX at all? 
