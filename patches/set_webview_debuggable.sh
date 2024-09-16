@@ -4,7 +4,7 @@
 #
 # Enables DevTools in each WebView in system,
 # so you can attach to it from desktop Chromium via url:
-# chrome://inspect/#devices 
+# chrome://inspect/#devices
 #
 ############################################################
 

@@ -2,7 +2,7 @@
 
 ############################################################
 #
-# This patch is based on Frida's most known SSLUnpinning script: 
+# This patch is based on Frida's most known SSLUnpinning script:
 # https://codeshare.frida.re/@akabe1/frida-multiple-unpinning/
 #
 ############################################################
