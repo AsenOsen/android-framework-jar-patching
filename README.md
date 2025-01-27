@@ -24,7 +24,8 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 8. Build Magisk module for replacing original JARs: `./build_magisk_module.sh`
 9. Push magisk module (`jarpatcher.zip`) to device via ADB, install magisk module and reboot device to apply changes: `adb push jarpatcher.zip /sdcard/ && adb shell su -c "magisk --install-module /sdcard/jarpatcher.zip" && adb reboot`
 	- if you modified JAR from APEX(`/apex/`), see `How to replace JAR in APEX?` section below
-10. Enjoy modified JAR! Or not if you caught a boot loop, then [here is how to easily fix it](#what-to-do-if-you-catch-a-bootloop-after-your-patching)
+10. **Enjoy modified JAR!** Or not if you caught a boot loop, then [here is how to easily fix it](#what-to-do-if-you-catch-a-bootloop-after-your-patching). If you keep catching bootloop, try to [clean your ART/Dalvik cache](https://community.e.foundation/t/howto-clear-dalvik-art-and-system-cache-in-twrp/28527) on device.
+
 
 # Patches! (for JARs)
 
@@ -85,6 +86,7 @@ If you need to modify some other APEXes, edit `service.sh` (see `REMOUNTING APEX
 
 1. Enable Magisk Hide ("magisk modifications are reverted for processes on hidelist") and install [PlayIntegrityFix module](https://github.com/chiteroman/PlayIntegrityFix) to stay stealth.
 2. Add researchable app to Magisk Hide list
+3. Before pushing patched JARs on device, [clean your ART/Dalvik cache](https://community.e.foundation/t/howto-clear-dalvik-art-and-system-cache-in-twrp/28527) on device.
 
 # What to do if you catch a bootloop after your patching?
 
