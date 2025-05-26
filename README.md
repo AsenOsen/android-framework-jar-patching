@@ -12,12 +12,16 @@ Magisk module does following things:
 
 Sometimes tools like Frida or XPosed/LSPosed got detected by app under research, so we need to use some **uncommon techniques** to bypass detection. One of such technique is patching system libraries (`.jar` files, `.so` files) to execute code from them as soon as app load them into memory.
 
+# Before you start
+
+Make sure you have recovery which lets you access your file system in `/data`  in case you will catch [a bootloop](#what-to-do-if-you-catch-a-bootloop-after-your-patching)
+
 # How to use?
 
 1. Download latest [apktool.jar](https://github.com/iBotPeaches/Apktool/releases) and put it in this folder
 2. Choose JAR file you want to modify on your Android from `/system/framework` or [APEX folder](#apex)
 3. Download JAR from device (via ADB) and put it in this folder under any name (for example `my.jar`)
-4. Modify variables in `*.sh` files according to comments on top
+4. Modify variables in `*.sh` files (in root folder) according to comments on top (optional)
 5. Run `./jar_to_smali.sh my.jar`, after run you will get `my.jar.smali` folder
 6. Modify SMALI files in `my.jar.smali` as you wish
 	- or [apply patches](#patches-for-jars)
