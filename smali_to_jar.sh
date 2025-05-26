@@ -2,7 +2,7 @@
 
 SCRIPT_PATH=$(dirname "$(realpath $0)")
 # this is the name of JAR you adb-pulled from your device (it can be any jar from /system/framework or /apex/)
-JAR_NAME=$1
+JAR_NAME="$1"
 # name of latest ApkTool you downloaded from GitHub, update it to your name
 LATEST_APKTOOL_JAR="apktool_2.9.3.jar"
 # ApkTool need this flag to build JAR (for APK no need)
