@@ -29,6 +29,7 @@ Make sure you have recovery which lets you access your file system in `/data`  i
 9. Build Magisk module for replacing original JARs: `./build_magisk_module.sh`
 10. Push magisk module (`jarpatcher.zip`) to device via ADB, install magisk module and reboot device to apply changes: `adb push jarpatcher.zip /sdcard/ && adb shell su -c "magisk --install-module /sdcard/jarpatcher.zip" && adb reboot`
 	- if you modified JAR from APEX(`/apex/`), see `How to replace JAR in APEX?` section below
+	- changes made over JAR 
 11. **Enjoy modified JAR!** Or not if you caught a boot loop, then [here is how to easily fix it](#what-to-do-if-you-catch-a-bootloop-after-your-patching). If you keep catching bootloop, try to [clean your ART/Dalvik cache](https://community.e.foundation/t/howto-clear-dalvik-art-and-system-cache-in-twrp/28527) on device.
 
 
