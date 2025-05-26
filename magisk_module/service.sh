@@ -32,9 +32,13 @@ remount_apex_writable "com.android.conscrypt" # contains "javalib/conscrypt.jar"
 
 ##### PERMANENT CHANGES IN APEXES #####
 
-stop
+# (UNCOMMENT if any APEX files substituted!)
+#stop
+
 # (assuming that modified JARS are inside Magisk module, in system/framework folder after building with smali_to_jar.sh script)
 # mv /system/framework/core-oj.jar /apex/com.android.art/javalib/core-oj.jar 
 # mv /system/framework/conscrypt.jar /apex/com.android.conscrypt/javalib/conscrypt.jar
 # replace original APEXes with your patched ones similarly...
-debug_ramdisk/su -c 'start'
+
+# (UNCOMMENT if any APEX files substituted!)
+#debug_ramdisk/su -c 'start'
