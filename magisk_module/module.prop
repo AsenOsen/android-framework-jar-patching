@@ -3,4 +3,4 @@ name=Framework JAR Patcher
 version=v1.0.0
 versionCode=1
 author=AntonAntochi
-description=Module for repalcing system JARs with patched ones
+description=Module for replacing system JARs with patched ones. More: https://github.com/AsenOsen/android-framework-jar-patching
