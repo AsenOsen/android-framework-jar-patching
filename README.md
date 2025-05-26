@@ -15,7 +15,7 @@ Sometimes tools like Frida or XPosed/LSPosed got detected by app under research,
 # How to use?
 
 1. Download latest [apktool.jar](https://github.com/iBotPeaches/Apktool/releases) and put it in this folder
-2. Choose JAR file you want to modify on your Android from `/system/framework`
+2. Choose JAR file you want to modify on your Android from `/system/framework` or [APEX folder](#apex)
 3. Download JAR from device (via ADB) and put it in this folder under any name (for example `my.jar`)
 4. Modify variables in `*.sh` files according to comments on top
 5. Run `./jar_to_smali.sh my.jar`, after run you will get `my.jar.smali` folder
