@@ -35,3 +35,17 @@ PATCH=$(cat << EOF
 EOF
 )
 patch_insert_after "$PATCH_IDENTITY" "$LIB" "$REGEX" "$PATCH" "$FILE"
+
+# patch #3: checkTrustedRecursive (variation)
+PATCH_IDENTITY=e81e9cc2f4ddda4955e42da3a277ec9a-2
+LIB='conscrypt.jar'
+FILE="com/android/org/conscrypt/TrustManagerImpl.smali"
+REGEX='.method private blacklist checkTrustedRecursive\(\[Ljava\/security\/cert\/X509Certificate;\[B\[BLjava\/lang\/String;ZLjava\/util\/List;Ljava\/util\/List;Ljava\/util\/Set;\)Ljava\/util\/List;.*?\.line \d+\n'
+PATCH=$(cat << EOF
+	$(android_logcat $LIB"_checkTrustedRecursive")
+	new-instance v0, Ljava/util/ArrayList;
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+    return-object v0
+EOF
+)
+patch_insert_after "$PATCH_IDENTITY" "$LIB" "$REGEX" "$PATCH" "$FILE"
